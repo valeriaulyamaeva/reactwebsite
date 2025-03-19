@@ -92,6 +92,7 @@ const ServicesComponent = () => {
       display: 'flex',
       flexDirection: 'column',
       padding: '0.5rem',
+      marginTop: '2rem',
       [theme.breakpoints.down('md')]: {
         marginLeft: '0',
       },

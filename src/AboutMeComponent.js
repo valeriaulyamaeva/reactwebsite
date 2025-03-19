@@ -22,8 +22,8 @@ const AboutMeComponent = () => {
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      padding: '0.5rem',
-      marginLeft: '20%',
+      marginLeft: '19%',
+      marginTop: '3.5rem',
       [theme.breakpoints.down('md')]: {
         marginLeft: '0',
       },

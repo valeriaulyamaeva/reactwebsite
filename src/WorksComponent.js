@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container, Grid, Typography, Button, Link, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
@@ -15,70 +15,17 @@ import icon from './assets/images/north_east.png';
 const WorksComponent = () => {
   const theme = useTheme();
 
-  const [projects, setProjects] = useState([
-    { id: 1, category: 'Web-дизайн', title: 'Дизайн интернет-магазина', image: worksImg1, link: 'https://dribbble.com/shots/25543928-Furniture-eCommerce-Website-Header-Exploration' },
-    { id: 2, category: 'Мобильная разработка', title: 'Прототип и интерфейс мобильного банка', image: worksImg2, link: 'https://dribbble.com/shots/25546025-Dashboard-Stocks' },
-    { id: 3, category: 'UX-кейс', title: 'UI/UX для сайта бренда напитков', image: worksImg3, link: 'https://dribbble.com/shots/25521060-Nutless-Monkey-Flavored-Kentucky-Bourbon-Whiskey' },
-    { id: 4, category: 'Исследование юзеров', title: 'Анализ портала магазина косметики', image: worksImg4, link: 'https://dribbble.com/shots/25545713-Skincare-Products-Ecommerce-Web-Design' },
-  ]);
-
-  useEffect(() => {
-    const savedOrder = JSON.parse(localStorage.getItem('projectOrder'));
-    if (savedOrder) {
-      setProjects(savedOrder);
-    }
-  }, []);
-
-  const handleDragStart = (index) => {
-    const updatedProjects = [...projects];
-    updatedProjects[index].dragging = true;
-    setProjects(updatedProjects);
-  };
-
-  const handleDragEnd = (index) => {
-    const updatedProjects = [...projects];
-    updatedProjects[index].dragging = false;
-    setProjects(updatedProjects);
-    localStorage.setItem('projectOrder', JSON.stringify(projects));
-  };
-
-  const handleDragOver = (e, index) => {
-    e.preventDefault();
-    const draggingElement = projects.find(project => project.dragging);
-    const afterElement = getDragAfterElement(e.clientY);
-    if (afterElement === null) {
-      setProjects(prevState => {
-        const newProjects = [...prevState];
-        newProjects.push(draggingElement);
-        return newProjects;
-      });
-    } else {
-      const newProjects = [...projects];
-      newProjects.splice(index, 0, newProjects.splice(newProjects.indexOf(draggingElement), 1)[0]);
-      setProjects(newProjects);
-    }
-  };
-
-  const getDragAfterElement = (y) => {
-    const elements = [...document.querySelectorAll('.project:not(.dragging)')];
-    return elements.reduce((closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-      return offset < 0 && offset > closest.offset ? { offset, element: child } : closest;
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
-  };
-
   return (
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
       padding: '0.5rem',
-      marginLeft: '20%',
+      marginLeft: '23%',
+      marginTop: '2.5rem',
       [theme.breakpoints.down('md')]: {
         marginLeft: '0',
       },
     }}>
-      {/* Sidebar */}
       <Box sx={{
         position: 'fixed',
         top: 0,
@@ -92,32 +39,32 @@ const WorksComponent = () => {
           width: '12%',
         },
       }}>
-        <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
-        {/* Sidebar Links */}
-        <Box sx={{ marginBottom: '3rem' }}>
-          <RouterLink to="/" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Главная</RouterLink>
-          <RouterLink to="/about" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>О себе</RouterLink>
-          <RouterLink to="/services" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Услуги</RouterLink>
-          <RouterLink to="/works" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Мои работы</RouterLink>
-          <RouterLink to="/contact" style={{ display: 'block', color: '#fff', textDecoration: 'none', fontSize: '1.3rem' }}>Контакты</RouterLink>
-        </Box>
+<Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
 
-        <Box sx={{ marginTop: '5rem' }}>
-          <Link href="https://www.behance.net/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
-            <img src={Google} alt="Behance" style={{ width: '2rem' }} />
-          </Link>
-          <Link href="https://dribbble.com/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
-            <img src={Dribbble} alt="Dribbble" style={{ width: '2rem' }} />
-          </Link>
-          <Link href="https://www.instagram.com/" target="_blank" sx={{ display: 'block' }}>
-            <img src={Instagram} alt="Instagram" style={{ width: '2rem' }} />
-          </Link>
-        </Box>
+<Box sx={{ marginBottom: '3rem' }}>
+  <RouterLink to="/" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Главная</RouterLink>
+  <RouterLink to="/about" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>О себе</RouterLink>
+  <RouterLink to="/services" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Услуги</RouterLink>
+  <RouterLink to="/works" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Мои работы</RouterLink>
+  <RouterLink to="/contact" style={{ display: 'block', color: '#fff', textDecoration: 'none', fontSize: '1.3rem' }}>Контакты</RouterLink>
+</Box>
 
-        <Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
-          <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
-        </Box>
-      </Box>
+<Box sx={{ marginTop: '5rem' }}>
+  <Link href="https://www.behance.net/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+    <img src={Google} alt="Behance" style={{ width: '2rem' }} />
+  </Link>
+  <Link href="https://dribbble.com/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+    <img src={Dribbble} alt="Dribbble" style={{ width: '2rem' }} />
+  </Link>
+  <Link href="https://www.instagram.com/" target="_blank" sx={{ display: 'block' }}>
+    <img src={Instagram} alt="Instagram" style={{ width: '2rem' }} />
+  </Link>
+</Box>
+
+<Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
+  <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
+</Box>
+</Box>
 
       <Container sx={{
         display: 'flex',
@@ -144,24 +91,43 @@ const WorksComponent = () => {
             gridTemplateColumns: '1fr',
           },
         }}>
-          {projects.map((project, index) => (
+          {[
+            {
+              category: 'Web-дизайн',
+              title: 'Дизайн интернет-магазина',
+              image: worksImg1,
+              link: 'https://dribbble.com/shots/25543928-Furniture-eCommerce-Website-Header-Exploration',
+            },
+            {
+              category: 'Мобильная разработка',
+              title: 'Прототип и интерфейс мобильного банка',
+              image: worksImg2,
+              link: 'https://dribbble.com/shots/25546025-Dashboard-Stocks',
+            },
+            {
+              category: 'UX-кейс',
+              title: 'UI/UX для сайта бренда напитков',
+              image: worksImg3,
+              link: 'https://dribbble.com/shots/25521060-Nutless-Monkey-Flavored-Kentucky-Bourbon-Whiskey',
+            },
+            {
+              category: 'Исследование юзеров',
+              title: 'Анализ портала магазина косметики',
+              image: worksImg4,
+              link: 'https://dribbble.com/shots/25545713-Skincare-Products-Ecommerce-Web-Design',
+            },
+          ].map((project, index) => (
             <Grid item xs={12} sm={6} key={index}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: '2rem',
-                  backgroundColor: '#fff',
-                  padding: '1rem',
-                  transition: 'transform 0.3s ease',
-                  position: 'relative',
-                }}
-                draggable
-                onDragStart={() => handleDragStart(index)}
-                onDragEnd={() => handleDragEnd(index)}
-                onDragOver={(e) => handleDragOver(e, index)}
-              >
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: '2rem',
+                backgroundColor: '#fff',
+                padding: '1rem',
+                transition: 'transform 0.3s ease',
+                position: 'relative',
+              }}>
                 <Box sx={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -174,7 +140,7 @@ const WorksComponent = () => {
                   </Typography>
                   <Typography sx={{ fontSize: '1.25rem', color: '#000000', fontWeight: 'bold' }}>{project.title}</Typography>
                   <Link href={project.link} target="_blank" sx={{ fontSize: '1.5rem', color: 'black' }}>
-                    ↗
+                  ↗
                   </Link>
                 </Box>
                 <img src={project.image} alt={project.title} style={{
@@ -187,36 +153,46 @@ const WorksComponent = () => {
         </Grid>
 
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
-          <Link href="https://dribbble.com/" target="_blank" sx={{
-            display: 'flex',
-            alignItems: 'center',
+      <Link
+        href="https://dribbble.com/"
+        target="_blank"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          textDecoration: 'none',
+        }}
+      >
+        <Button
+          sx={{
+            backgroundColor: '#000',
+            color: '#fff',
+            padding: '1rem',
+            fontSize: '0.8rem',
+            border: 'none',
             textDecoration: 'none',
-          }}>
-            <Button sx={{
-              backgroundColor: '#000',
-              color: '#fff',
-              padding: '1rem',
-              fontSize: '0.8rem',
-              border: 'none',
-              textDecoration: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              transition: 'background-color 0.3s ease',
-              '&:hover': {
-                backgroundColor: '#333',
-              },
-            }}>
-              Узнать больше
-              <img src={icon} alt="Иконка" style={{
-                width: '12%',
-                height: 'auto',
-                marginLeft: '0.625rem',
-              }} />
-            </Button>
-          </Link>
-        </Box>
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+              backgroundColor: '#333',
+            },
+          }}
+        >
+          Узнать больше
+          <img
+          src={icon}
+          alt="Иконка"
+          style={{
+            width: '12%',
+            height: 'auto',
+            marginLeft: '0.625rem',
+          }}
+        />
+        </Button>
+      </Link>
+    </Box>
       </Container>
     </Box>
   );

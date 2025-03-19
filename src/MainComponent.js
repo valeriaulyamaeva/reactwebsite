@@ -17,8 +17,8 @@ const MainComponent = () => {
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      padding: '0.5rem',
       marginLeft: '20%',
+      marginTop: '5rem',
       [theme.breakpoints.down('md')]: {
         marginLeft: '0',
       },

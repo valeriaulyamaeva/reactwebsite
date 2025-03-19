@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import MainComponent from './MainComponent';
+import AboutMeComponent from './AboutMeComponent';
+import ServicesComponent from './ServicesComponent';
+import WorksComponent from './WorksComponent';
+import ContactsComponent from './ContactsComponent';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container">
+        <input type="checkbox" id="burger-toggle" className="burger-toggle" />
+        <label htmlFor="burger-toggle" className="burger-menu">☰</label>
+
+        <aside className="sidebar">
+          <div className="logo">Jac.</div>
+          <Routes>
+        <Route path="/" element={<MainComponent />} />
+        <Route path="/about" element={<AboutMeComponent />} />
+        <Route path="/services" element={<ServicesComponent />} />
+        <Route path="/works" element={<WorksComponent />} />
+        <Route path="/contact" element={<ContactsComponent />} />
+      </Routes>
+        </aside>
+        </div>
+    </Router>
   );
 }
 

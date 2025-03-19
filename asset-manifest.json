@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/valeriaulyamaeva/reactwebsite/static/css/main.e6c13ad2.css",
+    "main.js": "/valeriaulyamaeva/reactwebsite/static/js/main.5114f449.js",
+    "static/js/453.0472fe85.chunk.js": "/valeriaulyamaeva/reactwebsite/static/js/453.0472fe85.chunk.js",
+    "static/media/main_img.png": "/valeriaulyamaeva/reactwebsite/static/media/main_img.939f050ad8f398e5c4d5.png",
+    "static/media/contact_form_background.png": "/valeriaulyamaeva/reactwebsite/static/media/contact_form_background.5e2d31b6cde7d478244b.png",
+    "static/media/img_home.png": "/valeriaulyamaeva/reactwebsite/static/media/img_home.b905c90915d42af2eacd.png",
+    "static/media/web_design.webp": "/valeriaulyamaeva/reactwebsite/static/media/web_design.3bcf2fb7a215d25caa0a.webp",
+    "static/media/works_img_1.png": "/valeriaulyamaeva/reactwebsite/static/media/works_img_1.3615ee9bba3ee81b2d32.png",
+    "static/media/works_img_4.png": "/valeriaulyamaeva/reactwebsite/static/media/works_img_4.5f9a206c2d6fc98180ae.png",
+    "static/media/mobile.png": "/valeriaulyamaeva/reactwebsite/static/media/mobile.fc2856714d2f8718f619.png",
+    "static/media/works_img_2.png": "/valeriaulyamaeva/reactwebsite/static/media/works_img_2.a3248fc47c486ed39fa4.png",
+    "static/media/user_research.png": "/valeriaulyamaeva/reactwebsite/static/media/user_research.2c8831098763e26cebc6.png",
+    "static/media/ui_ux.jpg": "/valeriaulyamaeva/reactwebsite/static/media/ui_ux.5a553988b3fb912b30bf.jpg",
+    "static/media/works_img_3.png": "/valeriaulyamaeva/reactwebsite/static/media/works_img_3.8cf065ce192a8754137c.png",
+    "index.html": "/valeriaulyamaeva/reactwebsite/index.html",
+    "main.e6c13ad2.css.map": "/valeriaulyamaeva/reactwebsite/static/css/main.e6c13ad2.css.map",
+    "main.5114f449.js.map": "/valeriaulyamaeva/reactwebsite/static/js/main.5114f449.js.map",
+    "453.0472fe85.chunk.js.map": "/valeriaulyamaeva/reactwebsite/static/js/453.0472fe85.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.5114f449.js"
+  ]
+}

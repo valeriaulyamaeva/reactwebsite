@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/valeriaulyamaeva/reactwebsite/static/css/main.e6c13ad2.css",
-    "main.js": "/valeriaulyamaeva/reactwebsite/static/js/main.6be6e244.js",
+    "main.js": "/valeriaulyamaeva/reactwebsite/static/js/main.a36fba6a.js",
     "static/js/453.0472fe85.chunk.js": "/valeriaulyamaeva/reactwebsite/static/js/453.0472fe85.chunk.js",
     "static/media/main_img.png": "/valeriaulyamaeva/reactwebsite/static/media/main_img.939f050ad8f398e5c4d5.png",
     "static/media/contact_form_background.png": "/valeriaulyamaeva/reactwebsite/static/media/contact_form_background.5e2d31b6cde7d478244b.png",
@@ -16,11 +16,11 @@
     "static/media/works_img_3.png": "/valeriaulyamaeva/reactwebsite/static/media/works_img_3.8cf065ce192a8754137c.png",
     "index.html": "/valeriaulyamaeva/reactwebsite/index.html",
     "main.e6c13ad2.css.map": "/valeriaulyamaeva/reactwebsite/static/css/main.e6c13ad2.css.map",
-    "main.6be6e244.js.map": "/valeriaulyamaeva/reactwebsite/static/js/main.6be6e244.js.map",
+    "main.a36fba6a.js.map": "/valeriaulyamaeva/reactwebsite/static/js/main.a36fba6a.js.map",
     "453.0472fe85.chunk.js.map": "/valeriaulyamaeva/reactwebsite/static/js/453.0472fe85.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.6be6e244.js"
+    "static/js/main.a36fba6a.js"
   ]
 }

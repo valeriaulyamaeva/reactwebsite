@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import MainComponent from './MainComponent';
 import AboutMeComponent from './AboutMeComponent';
-import ServicesComponent from './ServicesComponent';
+import ServicesComponent from './pages/ServicesComponent';
 import WorksComponent from './WorksComponent';
 import ContactsComponent from './ContactsComponent';
 import Google from './assets/images/Goggle.png';
@@ -31,14 +31,13 @@ const App = () => {
           marginLeft: '0',
         },
       }}>
-        {/* Иконка бургера для мобильных устройств */}
         <IconButton
           sx={{
             position: 'fixed',
             top: 10,
             left: 10,
             color: '#fff',
-            display: { md: 'none' }, // Показывать только на мобильных
+            display: { md: 'none' }, 
             zIndex: 1300
           }}
           onClick={toggleDrawer}
@@ -46,7 +45,6 @@ const App = () => {
           <MenuIcon />
         </IconButton>
 
-        {/* Боковое меню для десктопа */}
         <Box sx={{
           position: 'fixed',
           top: 0,
@@ -57,7 +55,7 @@ const App = () => {
           color: '#fff',
           padding: '2rem',
           [theme.breakpoints.down('md')]: {
-            display: 'none', // Скрываем боковое меню для мобильных
+            display: 'none', 
           },
         }}>
           <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
@@ -79,9 +77,11 @@ const App = () => {
               <img src={Instagram} alt="Instagram" style={{ width: '2rem' }} />
             </Link>
           </Box>
+          <Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
+  <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
+</Box>
         </Box>
 
-        {/* Мобильное боковое меню */}
         <Drawer
           anchor="left"
           open={mobileOpen}
@@ -128,6 +128,9 @@ const App = () => {
             <Route path="/contact" element={<ContactsComponent />} />
           </Routes>
         </Box>
+        <Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
+  <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
+</Box>
       </Box>
     </Router>
   );

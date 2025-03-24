@@ -1,8 +1,9 @@
-import React from 'react';
-import { Container, Grid, Typography, Button, Link, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Container, Grid, Typography, Box, IconButton, Drawer, Link } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route, Link as RouterLink } from 'react-router-dom';
-import { LinkedIn, Phone, Email } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import MainComponent from './MainComponent';
 import AboutMeComponent from './AboutMeComponent';
 import ServicesComponent from './ServicesComponent';
@@ -14,6 +15,11 @@ import Instagram from './assets/images/Instagram.png';
 
 const App = () => {
   const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   return (
     <Router>
@@ -25,6 +31,22 @@ const App = () => {
           marginLeft: '0',
         },
       }}>
+        {/* Иконка бургера для мобильных устройств */}
+        <IconButton
+          sx={{
+            position: 'fixed',
+            top: 10,
+            left: 10,
+            color: '#fff',
+            display: { md: 'none' }, // Показывать только на мобильных
+            zIndex: 1300
+          }}
+          onClick={toggleDrawer}
+        >
+          <MenuIcon />
+        </IconButton>
+
+        {/* Боковое меню для десктопа */}
         <Box sx={{
           position: 'fixed',
           top: 0,
@@ -35,7 +57,7 @@ const App = () => {
           color: '#fff',
           padding: '2rem',
           [theme.breakpoints.down('md')]: {
-            width: '12%',
+            display: 'none', // Скрываем боковое меню для мобильных
           },
         }}>
           <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
@@ -58,6 +80,45 @@ const App = () => {
             </Link>
           </Box>
         </Box>
+
+        {/* Мобильное боковое меню */}
+        <Drawer
+          anchor="left"
+          open={mobileOpen}
+          onClose={toggleDrawer}
+          sx={{
+            '& .MuiDrawer-paper': {
+              width: '70%',
+              backgroundColor: '#000',
+              color: '#fff',
+              padding: '2rem'
+            }
+          }}
+        >
+          <IconButton onClick={toggleDrawer} sx={{ color: '#fff', position: 'absolute', top: 10, right: 10 }}>
+            <CloseIcon />
+          </IconButton>
+          <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '3rem' }}>Jac.</Typography>
+          <Box sx={{ marginBottom: '3rem' }}>
+            <RouterLink to="/" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Главная</RouterLink>
+            <RouterLink to="/about" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>О себе</RouterLink>
+            <RouterLink to="/services" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Услуги</RouterLink>
+            <RouterLink to="/works" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Мои работы</RouterLink>
+            <RouterLink to="/contact" style={{ display: 'block', color: '#fff', textDecoration: 'none', fontSize: '1.3rem' }}>Контакты</RouterLink>
+          </Box>
+          <Box sx={{ marginTop: '5rem' }}>
+            <Link href="https://www.behance.net/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+              <img src={Google} alt="Behance" style={{ width: '2rem' }} />
+            </Link>
+            <Link href="https://dribbble.com/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+              <img src={Dribbble} alt="Dribbble" style={{ width: '2rem' }} />
+            </Link>
+            <Link href="https://www.instagram.com/" target="_blank" sx={{ display: 'block' }}>
+              <img src={Instagram} alt="Instagram" style={{ width: '2rem' }} />
+            </Link>
+          </Box>
+        </Drawer>
+
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '0', marginLeft: '0' }}>
           <Routes>
             <Route path="/" element={<MainComponent />} />

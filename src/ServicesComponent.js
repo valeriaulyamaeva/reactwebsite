@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Collapse,
-  IconButton,
-  Box,
-  Link
-} from "@mui/material";
+  Container, Typography, Grid, Card, CardContent, CardMedia, Collapse, IconButton, Box, Link, ListItem, Drawer, List} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Link as RouterLink } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 
 import Google from './assets/images/Goggle.png';
 import Dribbble from './assets/images/icon.png';
@@ -25,6 +17,11 @@ import userResearchImage from './assets/images/user_research.png';
 
 const ServicesComponent = () => {
   const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setMobileOpen(!mobileOpen);
+  };
   const [expanded, setExpanded] = useState({
     webDesign: false,
     uiUxDesign: false,
@@ -91,12 +88,27 @@ const ServicesComponent = () => {
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      padding: '0.5rem',
-      marginTop: '2rem',
+      marginTop: '0rem',
       [theme.breakpoints.down('md')]: {
         marginLeft: '0',
       },
     }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '19%', marginTop: '3.5rem', [theme.breakpoints.down('md')]: { marginLeft: '0' } }}>
+      
+    <IconButton
+        sx={{
+          position: 'fixed',
+          top: 10,
+          left: 10,
+          color: '#000',
+          display: { md: 'none' },
+          zIndex: 1300
+        }}
+        onClick={toggleDrawer}
+      >
+        <MenuIcon />
+      </IconButton>
+
       <Box sx={{
         position: 'fixed',
         top: 0,
@@ -106,21 +118,17 @@ const ServicesComponent = () => {
         backgroundColor: '#000',
         color: '#fff',
         padding: '2rem',
-        [theme.breakpoints.down('md')]: {
-          width: '12%',
-        },
+        [theme.breakpoints.down('md')]: { display: 'none' },
       }}>
-<Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
-
-<Box sx={{ marginBottom: '3rem' }}>
-  <RouterLink to="/" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Главная</RouterLink>
-  <RouterLink to="/about" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>О себе</RouterLink>
-  <RouterLink to="/services" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Услуги</RouterLink>
-  <RouterLink to="/works" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Мои работы</RouterLink>
-  <RouterLink to="/contact" style={{ display: 'block', color: '#fff', textDecoration: 'none', fontSize: '1.3rem' }}>Контакты</RouterLink>
-</Box>
-
-<Box sx={{ marginTop: '5rem' }}>
+        <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
+        <Box sx={{ fontSize: '1.3rem', marginBottom: '3rem' }}>
+          <RouterLink to="/" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>Главная</RouterLink>
+          <RouterLink to="/about" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>О себе</RouterLink>
+          <RouterLink to="/services" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>Услуги</RouterLink>
+          <RouterLink to="/works" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>Мои работы</RouterLink>
+          <RouterLink to="/contact" style={{ display: 'block', color: '#fff', textDecoration: 'none' }}>Контакты</RouterLink>
+        </Box>
+        <Box sx={{ marginTop: '5rem' }}>
   <Link href="https://www.behance.net/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
     <img src={Google} alt="Behance" style={{ width: '2rem' }} />
   </Link>
@@ -135,49 +143,136 @@ const ServicesComponent = () => {
 <Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
   <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
 </Box>
+      </Box>
+
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={toggleDrawer}
+        sx={{
+          '& .MuiDrawer-paper': {
+            width: '70%',
+            backgroundColor: '#000',
+            color: '#fff',
+            padding: '2rem'
+          }
+        }}
+      >
+        <IconButton onClick={toggleDrawer} sx={{ color: '#fff', position: 'absolute', top: 10, right: 10 }}>
+          <CloseIcon />
+        </IconButton>
+        <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '3rem' }}>Jac.</Typography>
+        <List>
+          <ListItem><RouterLink to="/" style={{ color: '#fff', textDecoration: 'none' }}>Главная</RouterLink></ListItem>
+          <ListItem><RouterLink to="/about" style={{ color: '#fff', textDecoration: 'none' }}>О себе</RouterLink></ListItem>
+          <ListItem><RouterLink to="/services" style={{ color: '#fff', textDecoration: 'none' }}>Услуги</RouterLink></ListItem>
+          <ListItem><RouterLink to="/works" style={{ color: '#fff', textDecoration: 'none' }}>Мои работы</RouterLink></ListItem>
+          <ListItem><RouterLink to="/contact" style={{ color: '#fff', textDecoration: 'none' }}>Контакты</RouterLink></ListItem>
+        </List>
+        <Box sx={{ marginTop: '5rem' }}>
+  <Link href="https://www.behance.net/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+    <img src={Google} alt="Behance" style={{ width: '2rem' }} />
+  </Link>
+  <Link href="https://dribbble.com/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+    <img src={Dribbble} alt="Dribbble" style={{ width: '2rem' }} />
+  </Link>
+  <Link href="https://www.instagram.com/" target="_blank" sx={{ display: 'block' }}>
+    <img src={Instagram} alt="Instagram" style={{ width: '2rem' }} />
+  </Link>
 </Box>
 
-      <Container sx={{ marginLeft: '20%', marginTop: '2rem' }}>
-        <header style={{ marginBottom: "3rem" }}>
-          <Box sx={{ backgroundColor: '#fff', marginBottom: '1rem' }}>
-            <Typography variant="h6" sx={{ fontSize: '1rem', marginBottom: '0.75rem', fontStyle: 'italic', fontWeight: 550 }}>
-              Мои работы
+<Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
+  <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
+</Box>
+      </Drawer>
+    </Box>
+    <Container 
+  sx={{ 
+    marginLeft: { xs: '0', md: '20%' }, 
+    marginTop: '2rem', 
+    padding: { xs: '1rem', md: '0' } 
+  }}
+>
+  <header style={{ marginBottom: "2rem", textAlign: 'center' }}>
+    <Box sx={{ backgroundColor: '#fff', marginBottom: '1rem' }}>
+      <Typography 
+        variant="h6" 
+        sx={{ 
+          fontSize: { xs: '0.875rem', sm: '1rem' }, 
+          marginBottom: '0.5rem', 
+          fontStyle: 'italic', 
+          fontWeight: 550 
+        }}
+      >
+        Мои работы
+      </Typography>
+      <Typography 
+        variant="h2" 
+        sx={{ 
+          fontSize: { xs: '1.5rem', sm: '2rem' }, 
+          fontWeight: 'bold' 
+        }}
+      >
+        ПОСЛЕДНИЕ ПРОЕКТЫ
+      </Typography>
+    </Box>
+  </header>
+  <Grid container spacing={2}>
+    {services.map((service) => (
+      <Grid 
+        item 
+        xs={12} 
+        sm={6} 
+        key={service.id} 
+        draggable 
+        onDragStart={(e) => handleDragStart(e, service.id)} 
+        onDrop={(e) => handleDrop(e, service.id)} 
+        onDragOver={handleDragOver}
+      >
+        <Card sx={{ 
+          padding: { xs: '0.5rem', sm: '1rem' }, 
+          boxShadow: { xs: 'none', sm: '0px 4px 6px rgba(0, 0, 0, 0.1)' } 
+        }}>
+          <CardContent sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
+            <Typography 
+              variant="h5" 
+              fontWeight="bold" 
+              sx={{ fontSize: { xs: '1.125rem', sm: '1.25rem' } }}
+            >
+              {service.title}
             </Typography>
-            <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 'bold' }}>
-              ПОСЛЕДНИЕ ПРОЕКТЫ
+            <Typography 
+              variant="body2" 
+              color="textSecondary" 
+              paragraph 
+              sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+            >
+              {service.description}
             </Typography>
-          </Box>
-        </header>
-
-        <Grid container spacing={3}>
-          {services.map((service) => (
-            <Grid item xs={12} sm={6} key={service.id} draggable onDragStart={(e) => handleDragStart(e, service.id)} onDrop={(e) => handleDrop(e, service.id)} onDragOver={handleDragOver}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" fontWeight="bold">
-                    {service.title}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" paragraph>
-                    {service.description}
-                  </Typography>
-                  <IconButton onClick={() => handleExpandClick(service.id)} aria-expanded={expanded[service.id]}>
-                    <ExpandMoreIcon />
-                  </IconButton>
-                  <Collapse in={expanded[service.id]}>
-                    <Typography variant="body2" color="textSecondary" paragraph>
-                    </Typography>
-                    <CardMedia
-                      component="img"
-                      alt={`Пример ${service.title}`}
-                      height="200"
-                      image={service.image}
-                    />
-                  </Collapse>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+            <IconButton 
+              onClick={() => handleExpandClick(service.id)} 
+              aria-expanded={expanded[service.id]}
+              sx={{ fontSize: { xs: '1rem', sm: '1.5rem' } }}
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+            <Collapse in={expanded[service.id]}>
+              <CardMedia
+                component="img"
+                alt={`Пример ${service.title}`}
+                height="auto"
+                sx={{ 
+                  maxHeight: { xs: '150px', sm: '200px' }, 
+                  objectFit: 'cover' 
+                }}
+                image={service.image}
+              />
+            </Collapse>
+          </CardContent>
+        </Card>
+      </Grid>
+    ))}
+  </Grid>
       </Container>
     </Box>
   );

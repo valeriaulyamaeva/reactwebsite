@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Box, Typography, Link, Container } from '@mui/material';
+import { Button, TextField, Box, Typography, Link, Container, Drawer, ListItem, IconButton, List } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 
 import Google from './assets/images/Goggle.png';
 import Dribbble from './assets/images/icon.png';
@@ -10,7 +12,11 @@ import backgroundImage from './assets/images/contact_form_background.png';
 
 const ContactsComponent = () => {
   const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
+  const toggleDrawer = () => {
+    setMobileOpen(!mobileOpen);
+  };
   const [tab, setTab] = useState(() => parseInt(localStorage.getItem("activeTab")) || 0);
 
   useEffect(() => {
@@ -23,38 +29,59 @@ const ContactsComponent = () => {
       email: "",
       password: "",
     });
-
+  
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState("");
-
+  
     const validate = () => {
       let newErrors = {};
-      if (!formData.name.trim()) newErrors.name = "Имя обязательно";
-      if (!formData.email.includes("@")) newErrors.email = "Некорректный email";
-
+      if (!formData.name.trim()) {
+        newErrors.name = "Имя обязательно";
+      } else if (formData.name.trim().length < 2) {
+        newErrors.name = "Имя должно содержать хотя бы 2 символа";
+      }
+  
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = "Некорректный email";
+      }
+  
       const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-
       if (!passwordRegex.test(formData.password)) {
         newErrors.password = "Пароль должен содержать минимум 6 символов, цифру, спецсимвол, заглавную и строчную буквы";
       }
-
+  
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
     };
-
+  
     const handleChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     };
-
+  
     const handleSubmit = (e) => {
       e.preventDefault();
       if (validate()) {
+        const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+        const userExists = existingUsers.some(user => user.email === formData.email);
+  
+        if (userExists) {
+          setErrors({ email: "Этот email уже зарегистрирован" });
+          return;
+        }
+  
+        const newUser = { ...formData };
+        existingUsers.push(newUser);
+        localStorage.setItem("users", JSON.stringify(existingUsers));
+  
         setSuccessMessage("Регистрация успешна!");
         setFormData({ name: "", email: "", password: "" });
         setErrors({});
+  
+        setTimeout(() => setSuccessMessage(""), 3000);
       }
     };
-
+  
     return (
 <Box
   sx={{
@@ -63,137 +90,145 @@ const ContactsComponent = () => {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
     maxWidth: '600px',
-    height: 'auto',
-    color: '#fff',
-    padding: '2rem',
+    padding: { xs: '1.5rem', sm: '2rem' },
     margin: '1rem auto',
+    color: '#fff',
   }}
 >
-  {successMessage && <Typography variant="body1" color="success.main" sx={{ marginBottom: '1rem' }}>{successMessage}</Typography>}
-  <form onSubmit={handleSubmit}>
-    <Typography variant="h6" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>Регистрация</Typography>
-    <div className="form-row" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-      <div className="form-group" style={{ flex: 1, minWidth: '7.5rem', display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
+{successMessage && (
+    <Typography variant="body1" sx={{ marginBottom: '1rem', color: '#fff', textAlign: 'center' }}>
+      {successMessage}
+    </Typography>
+  )}
+  <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+    <Typography 
+      variant="h6" 
+      sx={{ 
+        fontSize: { xs: '0.9rem', sm: '1rem' }, 
+        marginBottom: '1rem', 
+        textAlign: 'center', 
+        color: '#fff' 
+      }}
+    >
+      Регистрация
+    </Typography>
+    <TextField
+      label="Имя"
+      variant="outlined"
+      fullWidth
+      name="name"
+      value={formData.name}
+      onChange={handleChange}
+      error={!!errors.name}
+      helperText={errors.name}
+      InputLabelProps={{ style: { color: '#fff' } }}
+      sx={{ 
+        background: 'transparent', 
+        input: { color: '#fff' }, 
+        marginBottom: '1rem',
+      }}
+    />
         <TextField
-          label="Имя"
-          variant="outlined"
-          fullWidth
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          error={!!errors.name}
-          helperText={errors.name}
-          sx={{
-            background: 'transparent',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: '#fff',
-              },
-            },
-            '& .MuiInputBase-input': {
-              color: '#fff',
-              fontSize: '1.25rem',
-            },
-          }}
-        />
-      </div>
-      <div className="form-group" style={{ flex: 1, minWidth: '7.5rem', display: 'flex', flexDirection: 'column', marginBottom: '2rem' }}>
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          error={!!errors.email}
-          helperText={errors.email}
-          sx={{
-            background: 'transparent',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: '#fff',
-              },
-            },
-            '& .MuiInputBase-input': {
-              color: '#fff',
-              fontSize: '1.25rem',
-            },
-          }}
-        />
-      </div>
-    </div>
-    <div className="form-group" style={{ marginBottom: '2rem' }}>
-      <TextField
-        label="Пароль"
-        variant="outlined"
-        fullWidth
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        error={!!errors.password}
-        helperText={errors.password}
-        sx={{
-          background: 'transparent',
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#fff',
-            },
-          },
-          '& .MuiInputBase-input': {
-            color: '#fff',
-            fontSize: '1.25rem',
-          },
-        }}
-      />
-    </div>
+      label="Email"
+      variant="outlined"
+      fullWidth
+      name="email"
+      value={formData.email}
+      onChange={handleChange}
+      error={!!errors.email}
+      helperText={errors.email}
+      InputLabelProps={{ style: { color: '#fff' } }}
+      sx={{ 
+        background: 'transparent', 
+        input: { color: '#fff' }, 
+        marginBottom: '1rem',
+      }}
+    />
+    <TextField
+      label="Пароль"
+      variant="outlined"
+      fullWidth
+      type="password"
+      name="password"
+      value={formData.password}
+      onChange={handleChange}
+      error={!!errors.password}
+      helperText={errors.password}
+      InputLabelProps={{ style: { color: '#fff' } }}
+      sx={{ 
+        background: 'transparent', 
+        input: { color: '#fff' }, 
+        marginBottom: '1rem',
+      }}
+    />
     <Button
       type="submit"
       sx={{
         backgroundColor: '#000',
         color: '#fff',
         padding: '0.5rem 1rem',
-        fontSize: '1rem',
-        width: '50%',
-        '&:hover': {
-          backgroundColor: '#444',
-          transform: 'scale(1.05)',
-        },
+        fontSize: { xs: '0.9rem', sm: '1rem' },
+        width: '100%',
+        '&:hover': { backgroundColor: '#ddd', transform: 'scale(1.05)' },
       }}
     >
       Зарегистрироваться
     </Button>
   </form>
 </Box>
-
     );
   };
+  
 
   const ContactSection = () => (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        padding: 3,
+<Box
+  sx={{
+    display: 'flex',
+    justifyContent: 'center',
+    padding: { xs: 2, sm: 3 },
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+  }}
+>
+<Box sx={{ width: '100%', maxWidth: '600px', marginTop: '3rem' }}>
+    <Typography 
+      variant="h4" 
+      component="h2" 
+      gutterBottom 
+      sx={{ 
+        fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }, 
+        fontWeight: 'bold', 
+        marginBottom: '1.5rem' 
       }}
     >
-      <Box sx={{ textAlign: 'left', marginTop: '4rem' }}>
-        <Typography variant="h4" component="h2" gutterBottom sx={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '2rem' }}>
-          СВЯЖИСЬ СО МНОЙ
-        </Typography>
-        <Typography variant="body1" paragraph sx={{ fontSize: '1.25rem', }}> 
-          проспект Независимости, 58, оф.405
-        </Typography>
-        <Typography variant="h5" paragraph sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-          +375 33 444 05 05
-        </Typography>
-        <Typography variant="body1" paragraph sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-          anton360@gmail.com
-        </Typography>
+      СВЯЖИСЬ СО МНОЙ
+    </Typography>
+    <Typography 
+      variant="body1" 
+      paragraph 
+      sx={{ fontSize: { xs: '1rem', sm: '1.2rem' } }}
+    > 
+      проспект Независимости, 58, оф.405
+    </Typography>
+    <Typography 
+      variant="h5" 
+      paragraph 
+      sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' }, fontWeight: 'bold' }}
+    >
+      +375 33 444 05 05
+    </Typography>
+    <Typography 
+      variant="body1" 
+      paragraph 
+      sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' }, fontWeight: 'bold' }}
+    >
+      anton360@gmail.com
+    </Typography>
         <Box sx={{ marginTop: 2 }}>
           <Link href="https://facebook.com" target="_blank" sx={{ marginRight: 2, color: 'black', fontSize: '1.25rem' }}>
             FACEBOOK
@@ -204,9 +239,6 @@ const ContactsComponent = () => {
           <Link href="https://instagram.com" target="_blank" sx={{ marginRight: 2, color: 'black', fontSize: '1.25rem' }}>
             INSTAGRAM
           </Link>
-          <Link href="https://linkedin.com" target="_blank" sx={{ color: 'black', fontSize: '1.25rem' }}>
-            LINKEDIN
-          </Link>
         </Box>
       </Box>
     </Box>
@@ -216,11 +248,27 @@ const ContactsComponent = () => {
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
-      padding: '0.5rem',
+      marginTop: '0rem',
       [theme.breakpoints.down('md')]: {
         marginLeft: '0',
       },
     }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '19%', marginTop: '3.5rem', [theme.breakpoints.down('md')]: { marginLeft: '0' } }}>
+      
+    <IconButton
+        sx={{
+          position: 'fixed',
+          top: 10,
+          left: 10,
+          color: '#000',
+          display: { md: 'none' },
+          zIndex: 1300
+        }}
+        onClick={toggleDrawer}
+      >
+        <MenuIcon />
+      </IconButton>
+
       <Box sx={{
         position: 'fixed',
         top: 0,
@@ -230,21 +278,17 @@ const ContactsComponent = () => {
         backgroundColor: '#000',
         color: '#fff',
         padding: '2rem',
-        [theme.breakpoints.down('md')]: {
-          width: '12%',
-        },
+        [theme.breakpoints.down('md')]: { display: 'none' },
       }}>
-<Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
-
-<Box sx={{ marginBottom: '3rem' }}>
-  <RouterLink to="/" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Главная</RouterLink>
-  <RouterLink to="/about" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>О себе</RouterLink>
-  <RouterLink to="/services" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Услуги</RouterLink>
-  <RouterLink to="/works" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '0.75rem', fontSize: '1.3rem' }}>Мои работы</RouterLink>
-  <RouterLink to="/contact" style={{ display: 'block', color: '#fff', textDecoration: 'none', fontSize: '1.3rem' }}>Контакты</RouterLink>
-</Box>
-
-<Box sx={{ marginTop: '5rem' }}>
+        <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '5rem' }}>Jac.</Typography>
+        <Box sx={{ fontSize: '1.3rem', marginBottom: '3rem' }}>
+          <RouterLink to="/" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>Главная</RouterLink>
+          <RouterLink to="/about" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>О себе</RouterLink>
+          <RouterLink to="/services" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>Услуги</RouterLink>
+          <RouterLink to="/works" style={{ display: 'block', color: '#fff', textDecoration: 'none', marginBottom: '1rem' }}>Мои работы</RouterLink>
+          <RouterLink to="/contact" style={{ display: 'block', color: '#fff', textDecoration: 'none' }}>Контакты</RouterLink>
+        </Box>
+        <Box sx={{ marginTop: '5rem' }}>
   <Link href="https://www.behance.net/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
     <img src={Google} alt="Behance" style={{ width: '2rem' }} />
   </Link>
@@ -259,9 +303,51 @@ const ContactsComponent = () => {
 <Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
   <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
 </Box>
+      </Box>
+
+      <Drawer
+        anchor="left"
+        open={mobileOpen}
+        onClose={toggleDrawer}
+        sx={{
+          '& .MuiDrawer-paper': {
+            width: '70%',
+            backgroundColor: '#000',
+            color: '#fff',
+            padding: '2rem'
+          }
+        }}
+      >
+        <IconButton onClick={toggleDrawer} sx={{ color: '#fff', position: 'absolute', top: 10, right: 10 }}>
+          <CloseIcon />
+        </IconButton>
+        <Typography sx={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '3rem' }}>Jac.</Typography>
+        <List>
+          <ListItem><RouterLink to="/" style={{ color: '#fff', textDecoration: 'none' }}>Главная</RouterLink></ListItem>
+          <ListItem><RouterLink to="/about" style={{ color: '#fff', textDecoration: 'none' }}>О себе</RouterLink></ListItem>
+          <ListItem><RouterLink to="/services" style={{ color: '#fff', textDecoration: 'none' }}>Услуги</RouterLink></ListItem>
+          <ListItem><RouterLink to="/works" style={{ color: '#fff', textDecoration: 'none' }}>Мои работы</RouterLink></ListItem>
+          <ListItem><RouterLink to="/contact" style={{ color: '#fff', textDecoration: 'none' }}>Контакты</RouterLink></ListItem>
+        </List>
+        <Box sx={{ marginTop: '5rem' }}>
+  <Link href="https://www.behance.net/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+    <img src={Google} alt="Behance" style={{ width: '2rem' }} />
+  </Link>
+  <Link href="https://dribbble.com/" target="_blank" sx={{ display: 'block', marginBottom: 1 }}>
+    <img src={Dribbble} alt="Dribbble" style={{ width: '2rem' }} />
+  </Link>
+  <Link href="https://www.instagram.com/" target="_blank" sx={{ display: 'block' }}>
+    <img src={Instagram} alt="Instagram" style={{ width: '2rem' }} />
+  </Link>
 </Box>
 
-      <Container sx={{ marginLeft: '20%', marginTop: '2rem' }}>
+<Box sx={{ marginTop: '6rem', textAlign: 'left', fontSize: '0.5rem', color: '#fff' }}>
+  <Typography>Copyright ©2025 Антон Павлов. Все права защищены.</Typography>
+</Box>
+      </Drawer>
+    </Box>
+
+      <Container sx={{  marginTop: '2rem' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
           <Button
             variant="outlined"
